@@ -1,0 +1,40 @@
+{
+  "users": [
+    {
+      "email": "admin@electrohub.com",
+      "password": "admin123",
+      "role": "admin"
+    },
+    {
+      "email": "user@electrohub.com",
+      "password": "user123",
+      "role": "user"
+    }
+  ],
+  "products": [
+    {
+      "name": "Wireless Headphones",
+      "description": "High-quality Bluetooth headphones",
+      "price": 99.99,
+      "stock": 50,
+      "category": "Audio",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "name": "Smart Watch",
+      "description": "Track your fitness and notifications",
+      "price": 149.99,
+      "stock": 30,
+      "category": "Wearables",
+      "imageUrl": "https://via.placeholder.com/150"
+    },
+    {
+      "name": "Gaming Mouse",
+      "description": "Ergonomic mouse with RGB lights",
+      "price": 59.99,
+      "stock": 100,
+      "category": "Gaming",
+      "imageUrl": "https://via.placeholder.com/150"
+    }
+  ]
+}
