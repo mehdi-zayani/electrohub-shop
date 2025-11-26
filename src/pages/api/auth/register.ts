@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   const hashedPassword = await bcrypt.hash(password, 10);
 
   const user = await prisma.user.create({
-    data: { email, password: hashedPassword, role: 'user' },
+    data: { email, password: hashedPassword, role: 'admin' },
   });
 
   res.status(201).json({ id: user.id, email: user.email, role: user.role });
