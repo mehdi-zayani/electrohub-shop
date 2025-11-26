@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff, User, Lock, Mail } from "lucide-react";
 import clsx from "clsx";
 
-export default function Register() {
+export default function RegisterPage() {
   const router = useRouter();
   const [form, setForm] = useState({ username: "", email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ export default function Register() {
       } else {
         router.push("/login");
       }
-    } catch (err) {
+    } catch {
       setError("Network error");
     } finally {
       setLoading(false);
@@ -49,16 +49,17 @@ export default function Register() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="max-w-md w-full bg-white dark:bg-neutral-800 shadow-lg rounded-lg p-8"
+        className="max-w-md w-full bg-white dark:bg-neutral-800 shadow-xl rounded-2xl p-8 relative overflow-hidden"
       >
+        {/* Bandeau violet plus épais que Login */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 animate-pulse" />
+
         <h2 className="text-2xl font-bold mb-6 text-center text-neutral-900 dark:text-neutral-50">
           Create an Account
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
 
           <div className="relative">
             <User className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={18} />
@@ -105,6 +106,13 @@ export default function Register() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+
+          <p className="text-xs text-neutral-500 dark:text-neutral-400">
+            By registering, you agree to{" "}
+            <a href="/terms" className="text-accent hover:underline">
+              Terms and Conditions
+            </a>
+          </p>
 
           <button
             type="submit"

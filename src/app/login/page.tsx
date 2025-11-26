@@ -8,13 +8,14 @@ import clsx from "clsx";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: "", password: "", stayConnected: false });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    const { name, value, type, checked } = e.target;
+    setForm({ ...form, [name]: type === "checkbox" ? checked : value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,7 +27,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({ email: form.email, password: form.password }),
       });
 
       const data = await res.json();
@@ -34,10 +35,10 @@ export default function LoginPage() {
       if (!res.ok) {
         setError(data.error || "Invalid credentials");
       } else {
-          localStorage.setItem("token", data.token);
+        localStorage.setItem("token", data.token);
         router.push("/profile");
       }
-    } catch (err) {
+    } catch {
       setError("Network error");
     } finally {
       setLoading(false);
@@ -50,16 +51,17 @@ export default function LoginPage() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-full max-w-md bg-white dark:bg-neutral-800 shadow-lg rounded-lg p-8"
+        className="w-full max-w-md bg-white dark:bg-neutral-800 shadow-xl rounded-2xl p-8 relative overflow-hidden"
       >
+        {/* Bandeau violet top */}
+        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-600 animate-pulse" />
+
         <h2 className="text-2xl font-bold mb-6 text-center text-neutral-900 dark:text-neutral-50">
           Sign in to your account
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          {error && (
-            <div className="text-red-500 text-sm text-center">{error}</div>
-          )}
+          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
 
           <div className="relative">
             <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-neutral-400" size={18} />
@@ -92,6 +94,23 @@ export default function LoginPage() {
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
+          </div>
+
+          {/* Stay connected and forgot password */}
+          <div className="flex justify-between items-center text-sm text-neutral-500 dark:text-neutral-400">
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                name="stayConnected"
+                checked={form.stayConnected}
+                onChange={handleChange}
+                className="accent-accent"
+              />
+              Stay connected
+            </label>
+            <a href="/forgot-password" className="text-accent hover:underline">
+              Forgot password?
+            </a>
           </div>
 
           <button
